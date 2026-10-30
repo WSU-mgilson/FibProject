@@ -32,7 +32,7 @@ USER_INPUT .FILL #0
 MSG .STRINGZ "Enter a fibonacci number 0 - 9:\n"
 ;Step 2 create Global variables section
 Globals
-    .FILL #0 ;this is our n or our fib number we want to calculate
+    .FILL #0 ;this is our n or our fib number we want to calculate, I just stored UserInput into global, bc it seemed easier than having to write a new subroutine
 
 ASCII_TO_DEC .FILL #-48
 
@@ -63,9 +63,27 @@ MAIN
     JSR FIB
 
 ;DISPLAY
-    LD R1 DEC_TO_ASCII
-    ADD R0 R1 R0
-    OUT
+;Tens Loop Division
+    ADD R2 R0 #0
+    AND R1 R1 #0
+DIVIDE_LOOP_START
+    ADD R2 R2 #-10
+BRn DIVIDE_LOOP_END
+    ADD R1 R1 #1
+    BRnzp DIVIDE_LOOP_START
+DIVIDE_LOOP_END
+ADD R2 R2 #10 ; get rid of the deficit from -10
+;Outputs tens place
+LD R3 DEC_TO_ASCII
+ADD R1 R1 #0  ;if zero branch and print ones place
+BRz ONES_PLACE
+ADD R0 R1 R3
+OUT
+ONES_PLACE
+;Outputs Ones place
+ADD R0 R2 #0
+ADD R0 R3 R0
+OUT
 
 ;Step 13 Pop arguments
     ADD R6 R6 #1
