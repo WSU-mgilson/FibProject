@@ -21,7 +21,7 @@ Stack_Pointer .FILL x6000
 
 ;Step 2 create Global variables section
 Globals
-    .FILL #9 ;this is our n or our fib number we want to calculate
+    .FILL #3 ;this is our n or our fib number we want to calculate
 
 
 
@@ -90,22 +90,37 @@ FIB
 
 ;Step 20 Check if we are at 1
     ADD R2 R1 #-1 ; n-1 is in R2
-    BRz BASE_CASE
+    BRnz BASE_CASE
 
 ;--------------General Case------------
-ADD R6 R6 #-1
+;fib(n-1)
+ADD R6 R6 #-1 
 STR R2 R6 #0 ;pushes n-1 to the stack
 
 JSR FIB
+ADD R6 R6 #1 ;pop
+ADD R6 R6 #-1
+STR R0 R6 #0
+;End of fib(n-1)
 
+
+;fib(n-2)
 LDR R1 R5 #2
+ADD R2 R1 #-2
+ADD R6 R6 #-1
+STR R2 R6 #0
+JSR FIB
+ADD R6 R6 #1
+;End of fib(n-2)
+
+
+LDR R1 R5 #-1
 
 ADD R0 R1 R0
 
 
 ;Step 13 Pop arguments
     ADD R6 R6 #1
-
 
 
 BRnzp FIB_DONE
@@ -116,8 +131,7 @@ BRnzp FIB_DONE
 
 ;------------Base Case------------
 BASE_CASE
-    AND R0 R0 #0
-    ADD R0 R0 #1
+    ADD R0 R1 #0
 ;-------------BASE_CASE END--------
 
 FIB_DONE
