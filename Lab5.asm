@@ -8,6 +8,16 @@ LD R6 Stack_Pointer
 ;Step 4 Load the address of Globals into R4
 LEA R4 Globals
 
+LEA R0, MSG
+PUTS
+GETC ;Typed input will be in R0
+OUT
+LD R1 ASCII_TO_DEC
+ADD R0 R0 R1
+STR R0 R4 #0
+
+
+
 ;Step 5 JSR into MAIN
 JSR MAIN
 
@@ -18,10 +28,13 @@ HALT
 
 ;Step 1 create stack pointer
 Stack_Pointer .FILL x6000
-
+USER_INPUT .FILL #0
+MSG .STRINGZ "Enter a fibonacci number 0 - 9:\n"
 ;Step 2 create Global variables section
 Globals
-    .FILL #3 ;this is our n or our fib number we want to calculate
+    .FILL #0 ;this is our n or our fib number we want to calculate
+
+ASCII_TO_DEC .FILL #-48
 
 
 
