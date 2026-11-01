@@ -12,11 +12,18 @@ LEA R0, MSG
 PUTS
 GETC ;Typed input will be in R0
 OUT
+
+
 LD R1 ASCII_TO_DEC
 ADD R0 R0 R1
 STR R0 R4 #0
 
+;Needed to move this below my STR of R0, thats why I was only seeing my input, because my output got destroyed
+LD R0, NEWLINE
+OUT
 
+LEA R0 ANSWER
+PUTS
 
 ;Step 5 JSR into MAIN
 JSR MAIN
@@ -28,8 +35,11 @@ HALT
 
 ;Step 1 create stack pointer
 Stack_Pointer .FILL x6000
+;Deviated from the lab, I thought it would be easier to just get the user input and store it into the Global var we already created insted of making a display routine
 USER_INPUT .FILL #0
 MSG .STRINGZ "Enter a fibonacci number 0 - 9:\n"
+NEWLINE .FILL x0A ; LC3 says a newline is x0A
+ANSWER .STRINGZ "Answer: "
 ;Step 2 create Global variables section
 Globals
     .FILL #0 ;this is our n or our fib number we want to calculate, I just stored UserInput into global, bc it seemed easier than having to write a new subroutine
