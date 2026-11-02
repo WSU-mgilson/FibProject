@@ -22,8 +22,24 @@ STR R0 R4 #0
 LD R0, NEWLINE
 OUT
 
+;Im getting even more jank with this, I just read that I need to have it say Fib(n) = something
+;prints Fib (
 LEA R0 ANSWER
 PUTS
+
+;prints n
+LDR R0 R4 #0
+LD R1 DEC_TO_ASCII
+ADD R0 R0 R1
+OUT
+
+;prints ) =
+AND R0 R0 #0
+LEA R0 ANSWER2
+PUTS
+
+
+
 
 ;Step 5 JSR into MAIN
 JSR MAIN
@@ -39,7 +55,8 @@ Stack_Pointer .FILL x6000
 USER_INPUT .FILL #0
 MSG .STRINGZ "Enter a fibonacci number 0 - 9:\n"
 NEWLINE .FILL x0A ; LC3 says a newline is x0A
-ANSWER .STRINGZ "Answer: "
+ANSWER .STRINGZ "Fib ("
+ANSWER2 .STRINGZ ") = "
 ;Step 2 create Global variables section
 Globals
     .FILL #0 ;this is our n or our fib number we want to calculate, I just stored UserInput into global, bc it seemed easier than having to write a new subroutine
